@@ -231,6 +231,9 @@ class ImageCollection(Collection):
         Args:
             data (binary): Image data to be loaded.
 
+        Returns:
+            (generator): Progress output as JSON objects
+
         Raises:
             :py:class:`docker.errors.APIError`
                 If the server returns an error.

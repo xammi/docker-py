@@ -248,6 +248,18 @@ class ImportImageTest(BaseAPIIntegrationTest):
         assert img_data['Config']['Cmd'] == ['echo']
         assert img_data['Config']['User'] == 'foobar'
 
+    @requires_api_version('1.23')
+    def test_get_load_image(self):
+        test_img = 'hello-world:latest'
+        self.client.pull(test_img)
+        data = self.client.get_image(test_img)
+        assert data
+        output = self.client.load_image(data)
+        assert any([
+            line for line in output
+            if 'Loaded image: {}'.format(test_img) in line.get('stream', '')
+        ])
+
     @contextlib.contextmanager
     def temporary_http_file_server(self, stream):
         '''Serve data from an IO stream over HTTP.'''
